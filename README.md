@@ -5,7 +5,7 @@
 
 - Vuforia 6.2.6
 
-- EasyTouch 
+- EasyTouch 5.0.10
 
 - Spline Editor 2.13.03
 
