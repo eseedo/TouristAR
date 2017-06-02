@@ -18,7 +18,9 @@ namespace Vuforia
         #region PRIVATE_MEMBER_VARIABLES
  
         private TrackableBehaviour mTrackableBehaviour;
+        
         [SerializeField] private SplineFollow splineFollow;
+        [SerializeField] private Animator elfAnimator;
     
         #endregion // PRIVATE_MEMBER_VARIABLES
 
@@ -90,6 +92,10 @@ namespace Vuforia
             
             //Start spline follow
             splineFollow.enabled = true;
+            
+            //Enable Animation
+            elfAnimator.SetBool("IsFlying", true);
+            
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
         }
