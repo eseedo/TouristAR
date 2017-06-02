@@ -13,19 +13,19 @@ namespace Vuforia
     /// A custom handler that implements the ITrackableEventHandler interface.
     /// </summary>
     public class DefaultTrackableEventHandler : MonoBehaviour,
-                                                ITrackableEventHandler
+        ITrackableEventHandler
     {
         #region PRIVATE_MEMBER_VARIABLES
- 
+
         private TrackableBehaviour mTrackableBehaviour;
-        
+
         [SerializeField] private SplineFollow splineFollow;
         [SerializeField] private Animator elfAnimator;
-    
+
         #endregion // PRIVATE_MEMBER_VARIABLES
 
         #region UNTIY_MONOBEHAVIOUR_METHODS
-    
+
         void Start()
         {
             mTrackableBehaviour = GetComponent<TrackableBehaviour>();
@@ -38,7 +38,6 @@ namespace Vuforia
         #endregion // UNTIY_MONOBEHAVIOUR_METHODS
 
 
-
         #region PUBLIC_METHODS
 
         /// <summary>
@@ -46,8 +45,8 @@ namespace Vuforia
         /// tracking state changes.
         /// </summary>
         public void OnTrackableStateChanged(
-                                        TrackableBehaviour.Status previousStatus,
-                                        TrackableBehaviour.Status newStatus)
+            TrackableBehaviour.Status previousStatus,
+            TrackableBehaviour.Status newStatus)
         {
             if (newStatus == TrackableBehaviour.Status.DETECTED ||
                 newStatus == TrackableBehaviour.Status.TRACKED ||
@@ -64,9 +63,7 @@ namespace Vuforia
         #endregion // PUBLIC_METHODS
 
 
-
         #region PRIVATE_METHODS
-
 
         private void OnTrackingFound()
         {
@@ -84,18 +81,13 @@ namespace Vuforia
             {
                 component.enabled = true;
             }
-            
+
             //Remove all from Parent
-            foreach (Transform obj in transform){
+            foreach (Transform obj in transform)
+            {
                 obj.transform.SetParent(null);
             }
-            
-            //Start spline follow
-            splineFollow.enabled = true;
-            
-            //Enable Animation
-            elfAnimator.SetBool("IsFlying", true);
-            
+
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
         }
