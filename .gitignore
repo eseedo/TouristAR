@@ -31,6 +31,9 @@ ExportedObj/
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
 
+# Vuforia plugin
+Assets/Vuforia/
+
 # Builds
 *.apk
 *.unitypackage
