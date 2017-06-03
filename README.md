@@ -9,7 +9,7 @@
 
 - Spline Editor 2.13.03
 
-- iOS Native 9.7/19
+- Gallery Screenshot  1.5.3
 
   ​
 

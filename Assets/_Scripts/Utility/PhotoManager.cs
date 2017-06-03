@@ -11,6 +11,10 @@ public class PhotoManager : MonoBehaviour
     public CanvasGroup ui;
     public Image screenshot;
 
+    private int count = 1;
+    private string path;
+
+
     private void OnEnable()
     {
         ScreenshotManager.OnScreenshotTaken += ScreenshotTaken;
@@ -19,16 +23,33 @@ public class PhotoManager : MonoBehaviour
 
     private void OnDisable()
     {
-       ScreenshotManager.OnScreenshotTaken -= ScreenshotTaken;
-       ScreenshotManager.OnScreenshotSaved -= ScreenshotSaved;
+        ScreenshotManager.OnScreenshotTaken -= ScreenshotTaken;
+        ScreenshotManager.OnScreenshotSaved -= ScreenshotSaved;
     }
 
-    private void ScreenshotSaved(string s)
+    private void Start()
+    {
+        path = Application.persistentDataPath + "/";
+    }
+
+    
+    public void TakePhoto()
+    {
+        ScreenshotManager.SaveScreenshot("pic", "红石林" + count, "jpeg");
+        if (hideGUI)
+        {
+            ui.alpha = 0;
+        }
+
+        count++;
+    }
+    
+    private void ScreenshotSaved(string path)
     {
         //TODO 显示保存成功的UI
     }
 
-     private void ScreenshotTaken(Texture2D image)
+    private void ScreenshotTaken(Texture2D image)
     {
         Debug.Log("TakePhoto");
         screenshot.sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(.5f, .5f));
@@ -36,15 +57,12 @@ public class PhotoManager : MonoBehaviour
         screenshot.gameObject.SetActive(true);
         ui.alpha = 1;
 
+        //更新Content，准备分享
+
     }
 
-    public void TakePhoto()
-    {
-        ScreenshotManager.SaveScreenshot("pic", "红石林", "jpeg");
-        if (hideGUI)
-        {
-            ui.alpha = 0;
-        }
 
+    public void ShareToWechatMoments()
+    {
     }
 }
