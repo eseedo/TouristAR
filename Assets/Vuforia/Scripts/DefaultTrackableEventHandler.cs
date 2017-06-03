@@ -18,9 +18,8 @@ namespace Vuforia
         #region PRIVATE_MEMBER_VARIABLES
 
         private TrackableBehaviour mTrackableBehaviour;
-
-        [SerializeField] private SplineFollow splineFollow;
-        [SerializeField] private Animator elfAnimator;
+        
+         
 
         #endregion // PRIVATE_MEMBER_VARIABLES
 
@@ -64,9 +63,17 @@ namespace Vuforia
 
 
         #region PRIVATE_METHODS
-
+        
         private void OnTrackingFound()
         {
+            GetComponent<ImageTargetBehaviour>().enabled = false;
+           
+            //Remove all from Parent
+            foreach (Transform obj in transform)
+            {
+                obj.transform.SetParent(null);
+            }
+            
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
@@ -80,12 +87,6 @@ namespace Vuforia
             foreach (Collider component in colliderComponents)
             {
                 component.enabled = true;
-            }
-
-            //Remove all from Parent
-            foreach (Transform obj in transform)
-            {
-                obj.transform.SetParent(null);
             }
 
 
