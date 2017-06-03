@@ -1,0 +1,185 @@
+#if !TARGET_OS_TV
+
+////////////////////////////////////////////////////////////////////////////////
+//
+// @module IOS Native Plugin
+// @author Osipov Stanislav (Stan's Assets)
+// @support support@stansassets.com
+// @website https://stansassets.com
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#import "ISN_NativeCore.h"
+#import <UserNotifications/UserNotifications.h>
+
+
+
+@interface ISN_UserNotifications : NSObject<UNUserNotificationCenterDelegate>
+
++ (id)  sharedInstance;
+@end
+
+
+@implementation ISN_UserNotifications
+
+
+static ISN_UserNotifications * un_sharedInstance;
+
++ (id)sharedInstance {
+
+    if (un_sharedInstance == nil)  {
+        un_sharedInstance = [[self alloc] init];
+    }
+
+    return un_sharedInstance;
+}
+
+- (void)requestPermissions {
+
+    [UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound + UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+        if (granted) {
+
+        } else {
+
+        }
+    }];
+}
+
+- (void)scheduleNotification:(NSString*)notification {
+    NSError *error = nil;
+
+    id object = [NSJSONSerialization
+                 JSONObjectWithData:[notification dataUsingEncoding:NSUTF8StringEncoding]
+                 options:0
+                 error:&error];
+
+    if(error) { /* JSON was malformed, act appropriately here */ }
+
+    // the originating poster wants to deal with dictionaries;
+    // assuming you do too then something like this is the first
+    // validation step:
+    if([object isKindOfClass:[NSDictionary class]])
+    {
+        NSDictionary *notification = object;
+        NSDictionary *contentDict = [notification objectForKey:@"content"];
+
+        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+
+        content.title = [contentDict objectForKey:@"title"];
+        content.subtitle = [contentDict objectForKey:@"subtitle"];
+        content.body = [contentDict objectForKey:@"body"];
+        content.badge = [contentDict objectForKey:@"badge"];
+        content.launchImageName = [contentDict objectForKey:@"launchImageName"];
+
+        content.categoryIdentifier = @"notification";
+        content.sound = [UNNotificationSound defaultSound];
+
+        NSDictionary *triggerDict = [notification objectForKey:@"trigger"];
+        NSLog(@"triggerDict: %@", triggerDict);
+
+
+        UNNotificationTrigger *trigger;
+
+        int repeats = [[triggerDict objectForKey:@"repeats"] integerValue];
+        BOOL repeat = false;
+        if (repeats != 0) {
+            repeat = true;
+        }
+
+        if ([triggerDict objectForKey:@"intervalToFire"] != nil) {
+            NSTimeInterval timeInterval = [[triggerDict objectForKey:@"intervalToFire"] integerValue];
+
+            trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:timeInterval repeats:repeat];
+        } else {
+            NSCalendar *calendar = [NSCalendar currentCalendar];
+            if ([triggerDict objectForKey:@"dateToFire"] != nil) {
+                NSString *dateString = (NSString*)[triggerDict objectForKey:@"dateToFire"];
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                [formatter setDateFormat:@"MM/dd/yyyy H:mm:ss"];
+
+                NSDate *date = [[formatter dateFromString:dateString] dateByAddingTimeInterval:60];
+
+                NSDateComponents *components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond|NSCalendarUnitTimeZone fromDate:date];
+
+                NSLog(@"date %@ = %@", dateString, components);
+                trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:components repeats:repeat];
+
+            } else {
+                NSCalendarUnit units = 0;
+                NSDateComponents *components = [[NSDateComponents alloc]init];
+                if ([triggerDict objectForKey:@"second"] != nil) {
+                    components.second = [[triggerDict objectForKey:@"second"] integerValue];
+                }
+                if ([triggerDict objectForKey:@"minute"] != nil) {
+                    components.minute = [[triggerDict objectForKey:@"minute"] integerValue];
+                }
+                if ([triggerDict objectForKey:@"hour"] != nil) {
+                    components.hour = [[triggerDict objectForKey:@"hour"] integerValue];
+                }
+                if ([triggerDict objectForKey:@"weekday"] != nil) {
+                    components.weekday = [[triggerDict objectForKey:@"weekday"] integerValue];
+                }
+                if ([triggerDict objectForKey:@"day"] != nil) {
+                    components.day = [[triggerDict objectForKey:@"day"] integerValue];
+                }
+                if ([triggerDict objectForKey:@"month"] != nil) {
+                    components.month = [[triggerDict objectForKey:@"month"] integerValue];
+                }
+                if ([triggerDict objectForKey:@"year"] != nil) {
+                    components.year = [[triggerDict objectForKey:@"year"] integerValue];
+                }
+                if ([triggerDict objectForKey:@"quarter"] != nil) {
+                    components.quarter = [[triggerDict objectForKey:@"quarter"] integerValue];
+                }
+
+                //[calendar components:units fromDate:
+                //                [NSDate date]];
+
+                NSLog(@"components %@", components);
+                trigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:components repeats:repeat];
+            }
+
+
+        }
+
+        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:@"NotificationTime"
+                                                                              content:content trigger:trigger];
+
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+
+        [center removeAllPendingNotificationRequests];
+
+        [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+            if (!error) {
+                NSLog(@"add NotificationRequest succeeded!");
+            } else {
+                NSLog(@"%@", error);
+            }
+        }];
+
+    }
+
+}
+
+@end
+
+extern "C" {
+
+
+    //--------------------------------------
+    //  IOS Native Plugin Section
+    //--------------------------------------
+    
+    
+    void _ISN_RequestPermissions() {
+        [ISN_UserNotifications.sharedInstance requestPermissions];
+    }
+    
+    void _ISN_ScheduleUserNotification(char* jsonString) {
+        [ISN_UserNotifications.sharedInstance scheduleNotification:[ISN_DataConvertor charToNSString:jsonString]];
+    }
+}
+
+
+
+#endif
