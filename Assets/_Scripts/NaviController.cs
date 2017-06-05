@@ -62,6 +62,10 @@ public class NaviController : MonoBehaviour
         
         //隐藏和显示相关UI
         UIController.instance.ShowExcept(UIController.Canvas.GuideUI);
+        
+        //播放音频
+        AudioController.instance.ClipToPlay = 2;
+
     }
 
     private void ClearData()

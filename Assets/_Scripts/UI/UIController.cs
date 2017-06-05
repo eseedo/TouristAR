@@ -78,7 +78,7 @@ public class UIController : MonoBehaviour
     {
         ScanUI.alpha = 1;
         ScanUI.gameObject.SetActive(true);
-
+        ShowExcept(Canvas.ScanUI);
     }
     
 
@@ -127,6 +127,7 @@ public class UIController : MonoBehaviour
         SelectUI.alpha = 1;
         SelectUI.gameObject.SetActive(true);
         ShowExcept(Canvas.SelectUI);
+        AudioController.instance.ClipToPlay = 1;
 
     }
     
@@ -141,6 +142,7 @@ public class UIController : MonoBehaviour
     {
         WelcomeUI.alpha = 1;
         WelcomeUI.gameObject.SetActive(true);
+        ShowExcept(Canvas.WelcomeUI);
 
     }
 }

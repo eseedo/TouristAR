@@ -79,6 +79,9 @@ namespace Vuforia
             UIController.instance.HideScanUI();
             UIController.instance.ShowWelcomeUI();
             
+            //播放音频
+            AudioController.instance.ClipToPlay = 0;
+            
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
