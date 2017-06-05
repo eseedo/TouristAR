@@ -72,7 +72,12 @@ namespace Vuforia
             foreach (Transform obj in transform)
             {
                 obj.transform.SetParent(null);
+                obj.transform.rotation = new Quaternion(0, 0, 0, 0);
             }
+            
+            //隐藏和显示相关UI
+            UIController.instance.HideScanUI();
+            UIController.instance.ShowWelcomeUI();
             
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);

@@ -59,9 +59,9 @@ public class NaviController : MonoBehaviour
         }
 
         elf.SetRoute(route.Spline);
-        //TODO 显示对应的箭头
-        StartTimer();
-        StartUpdateDistance();
+        
+        //隐藏和显示相关UI
+        UIController.instance.ShowExcept(UIController.Canvas.GuideUI);
     }
 
     private void ClearData()

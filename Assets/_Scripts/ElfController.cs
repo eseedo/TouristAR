@@ -10,9 +10,20 @@ using UnityEngine;
 public class ElfController : MonoBehaviour
 {
     public event Action OnRouteFinished;
+    public static ElfController instance;
 
     private Animator animator;
     private SplineFollow splineFollow;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        instance = null;
+    }
 
     void Start()
     {
@@ -28,5 +39,15 @@ public class ElfController : MonoBehaviour
         }
         splineFollow.Spline = spline;
         animator.SetBool("IsFlying", true);
+    }
+
+    public void Pause()
+    {
+        splineFollow.Speed = 0;
+    }
+
+    public void Resume()
+    {
+        splineFollow.Speed = 1;
     }
 }

@@ -3,12 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.IO;
+using Battlehub.SplineEditor;
 
 public class PhotoManager : MonoBehaviour
 {
-    public bool hideGUI = false;
+    public bool hideGUI;
     public Texture2D texture;
-    public CanvasGroup[] UIGroup;
     public Image screenshot;
 
     private int count = 1;
@@ -38,11 +38,9 @@ public class PhotoManager : MonoBehaviour
         ScreenshotManager.SaveScreenshot("pic", "红石林" + count, "jpeg");
         if (hideGUI)
         {
-            foreach (CanvasGroup ui in UIGroup)
-            {
-                ui.alpha = 0;
-            }
+            UIController.instance.HideGuideUI();
         }
+
 
         count++;
     }
@@ -59,10 +57,8 @@ public class PhotoManager : MonoBehaviour
         screenshot.color = Color.white;
         screenshot.gameObject.SetActive(true);
         
-        foreach (CanvasGroup ui in UIGroup)
-        {
-            ui.alpha = 0;
-        }
+        UIController.instance.ShowGuideUI();
+        UIController.instance.ShowPhotoUI();
 
         //更新Content，准备分享
 
