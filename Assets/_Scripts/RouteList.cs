@@ -37,7 +37,7 @@ public class RouteList : MonoBehaviour
 
     private void CreateRoutineList()
     {
-        Route tianchi = new Route(tianchiRoute, tianchiArrow, "天池", 1000, 6, tianchiPos.position);
+        Route tianchi = new Route(tianchiRoute, tianchiArrow, "天池", 1000, 15, tianchiPos.position);
         Routes.Add(tianchi);
     }
 

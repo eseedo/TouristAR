@@ -8,7 +8,7 @@ public class PhotoManager : MonoBehaviour
 {
     public bool hideGUI = false;
     public Texture2D texture;
-    public CanvasGroup ui;
+    public CanvasGroup[] UIGroup;
     public Image screenshot;
 
     private int count = 1;
@@ -38,7 +38,10 @@ public class PhotoManager : MonoBehaviour
         ScreenshotManager.SaveScreenshot("pic", "红石林" + count, "jpeg");
         if (hideGUI)
         {
-            ui.alpha = 0;
+            foreach (CanvasGroup ui in UIGroup)
+            {
+                ui.alpha = 0;
+            }
         }
 
         count++;
@@ -55,7 +58,11 @@ public class PhotoManager : MonoBehaviour
         screenshot.sprite = Sprite.Create(image, new Rect(0, 0, image.width, image.height), new Vector2(.5f, .5f));
         screenshot.color = Color.white;
         screenshot.gameObject.SetActive(true);
-        ui.alpha = 1;
+        
+        foreach (CanvasGroup ui in UIGroup)
+        {
+            ui.alpha = 0;
+        }
 
         //更新Content，准备分享
 
@@ -64,5 +71,6 @@ public class PhotoManager : MonoBehaviour
 
     public void ShareToWechatMoments()
     {
+        
     }
 }
