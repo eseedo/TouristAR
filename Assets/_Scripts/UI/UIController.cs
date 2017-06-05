@@ -6,10 +6,19 @@ public class UIController : MonoBehaviour
 {
     public static UIController instance;
 
+    public enum Canvas
+    {
+        WelcomeUI = 0,
+        SelectUI,
+        GuideUI,
+        PhotoUI
+    }
+
     public CanvasGroup GuideUI;
     public CanvasGroup PhotoUI;
     public CanvasGroup SelectUI;
     public CanvasGroup WelcomeUI;
+    public Canvas canvasName;
 
     private List<CanvasGroup> canvasGroups = new List<CanvasGroup>();
 
@@ -38,13 +47,11 @@ public class UIController : MonoBehaviour
         canvasGroups.Add(PhotoUI);
     }
 
-    private void HideExcept(CanvasGroup canvas)
+    public void HideExcept(Canvas canvas)
     {
-        int index = canvasGroups.IndexOf(canvas);
-
         for (int i = 0; i < canvasGroups.Count; i++)
         {
-            if (i == index)
+            if (i == (int) canvas)
             {
                 continue;
             }
@@ -52,6 +59,15 @@ public class UIController : MonoBehaviour
             canvasGroups[i].alpha = 0;
         }
     }
+
+    public void ShowAll()
+    {
+        for (int i = 0; i < canvasGroups.Count; i++)
+        {
+            canvasGroups[i].alpha = 1;
+        }  
+    }
+    
 
     public void HideGuideUI()
     {
