@@ -13,7 +13,7 @@ public class ElfController : MonoBehaviour
     public static ElfController instance;
 
     private Animator animator;
-    private SplineFollow splineFollow;
+    
 
     private void Awake()
     {
@@ -28,26 +28,21 @@ public class ElfController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        splineFollow = GetComponent<SplineFollow>();
     }
 
-    public void SetRoute(SplineBase spline)
+    public void SetRoute()
     {
-        if (splineFollow.enabled == false)
-        {
-            splineFollow.enabled = true;
-        }
-        splineFollow.Spline = spline;
+        transform.Rotate(0, 180, 0);
         animator.SetBool("IsFlying", true);
     }
 
     public void Pause()
     {
-        splineFollow.Speed = 0;
+
     }
 
     public void Resume()
     {
-        splineFollow.Speed = 1;
+
     }
 }

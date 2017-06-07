@@ -18,6 +18,9 @@ namespace Vuforia
         #region PRIVATE_MEMBER_VARIABLES
 
         private TrackableBehaviour mTrackableBehaviour;
+
+        public GameObject elf;
+        public GameObject arrow;
         
          
 
@@ -66,21 +69,28 @@ namespace Vuforia
         
         private void OnTrackingFound()
         {
-            GetComponent<ImageTargetBehaviour>().enabled = false;
-           
-            //Remove all from Parent
-            foreach (Transform obj in transform)
+            if (elf != null)
             {
-                obj.transform.SetParent(null);
-                obj.transform.rotation = new Quaternion(0, 0, 0, 0);
+                GetComponent<ImageTargetBehaviour>().enabled = false;
+           
+                //Remove all from Parent
+                foreach (Transform obj in transform)
+                {
+                    obj.transform.SetParent(null);
+                    obj.transform.rotation = new Quaternion(0, 0, 0, 0);
+                }
+            
+                elf.SetActive(true);
+                //arrow.SetActive(true);
+            
+//            //隐藏和显示相关UI
+                UIController.instance.HideScanUI();
+                UIController.instance.ShowWelcomeUI();
+            
+                //播放音频
+                AudioController.instance.ClipToPlay = 0;
             }
-            
-            //隐藏和显示相关UI
-            UIController.instance.HideScanUI();
-            UIController.instance.ShowWelcomeUI();
-            
-            //播放音频
-            AudioController.instance.ClipToPlay = 0;
+           
             
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);

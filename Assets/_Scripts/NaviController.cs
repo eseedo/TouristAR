@@ -2,16 +2,22 @@
 using System.Collections.Generic;
 using Battlehub.SplineEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using _Scripts;
 
 public class NaviController : MonoBehaviour
 {
-    private ElfController elf;
+    public GameObject elf;
+    public ElfController elfController;
     private float timer;
     private Route route;
     private float distance;
     [SerializeField] private Transform camera;
+    public GameObject arrow;
+    public Text title1;
+    public Text title2;
 
+    
     private Coroutine timerRoutine;
     private Coroutine distanceRoutine;
 
@@ -39,33 +45,63 @@ public class NaviController : MonoBehaviour
 
     private void Start()
     {
-        elf = FindObjectOfType<ElfController>();
-        if (elf == null)
-        {
-            Debug.LogError("无法找到ElfController");
-        }
-        
         //TODO 测试Route
         route = RouteList.instance.GetRoute(SceneryName.Tianchi);
     }
 
     public void StartNavi()
     {
+        elf.gameObject.SetActive(true);
+        elfController = elf.GetComponent<ElfController>();
+        if (elf == null)
+        {
+            Debug.LogError("无法找到ElfController");
+        }
+        
         ClearData();
         if (route.Equals(null))
         {
             Debug.LogError("未指定路线");
-            return;
+//            return;
         }
 
-        elf.SetRoute(route.Spline);
+        elfController.SetRoute();
+        arrow.SetActive(true);
         
         //隐藏和显示相关UI
-        UIController.instance.ShowExcept(UIController.Canvas.GuideUI);
+        UIController.instance.ShowExcept(UIController.Canvas.WelcomeUI);
         
         //播放音频
         AudioController.instance.ClipToPlay = 2;
 
+        title1.text = "即将前往：";
+        title2.text = "天池 10分钟";
+
+    }
+
+    public void StartNaviInWelcomeScene()
+    {
+        elf.gameObject.SetActive(true);
+        elfController = elf.GetComponent<ElfController>();
+        if (elf == null)
+        {
+            Debug.LogError("无法找到ElfController");
+        }
+        
+        ClearData();
+        if (route.Equals(null))
+        {
+            Debug.LogError("未指定路线");
+        }
+
+        elfController.SetRoute();
+        arrow.SetActive(true);
+
+        //播放音频
+        AudioController.instance.ClipToPlay = 2;
+        
+        title1.text = "即将前往：";
+        title2.text = "天池 10分钟";
     }
 
     private void ClearData()
