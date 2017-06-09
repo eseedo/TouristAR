@@ -24,6 +24,8 @@ public class UIController : MonoBehaviour
     public GameObject arrow;
     public GameObject scanUIBackBtn;
     public GameObject peopleImg;
+    public GameObject viewBackBtn;
+    public GameObject viewUI;
 
 
     public bool isPreviousElfShowing;
