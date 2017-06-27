@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="PikaBack" size="1.000000 0.750000" />
+    <ImageTarget name="Pika" size="1.000000 0.750000" />
+    <ImageTarget name="Turtle" size="1.000000 1.406522" />
+    <ImageTarget name="People" size="1.000000 0.750000" />
+    <ImageTarget name="Book" size="1.000000 0.750000" />
+    <ImageTarget name="logo" size="1.000000 0.971910" />
+  </Tracking>
+</QCARConfig>
