@@ -24,6 +24,8 @@ using Vuforia;
 
 		public GameObject elf;
 
+	public GameObject ArriveUI;
+
 		#endregion // PRIVATE_MEMBER_VARIABLES
 
 		#region UNTIY_MONOBEHAVIOUR_METHODS
@@ -74,7 +76,11 @@ using Vuforia;
 //            //隐藏和显示相关UI
 			UIController.instance.ShowExcept(UIController.Canvas.WelcomeUI);
 			TianchiBtn.SetActive(false);
-			image.SetActive(true);
+			
+//			image.SetActive(true);
+
+		ArriveUI.SetActive (true);
+		elf.GetComponent<AudioSource> ().Play();
 
 
 			Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);

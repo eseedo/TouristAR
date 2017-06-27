@@ -107,8 +107,7 @@ public class UIController : MonoBehaviour
 
     public void ShowGuideUI()
     {
-        GuideUI.alpha = 1;
-        GuideUI.gameObject.SetActive(true);
+		ShowExcept (Canvas.GuideUI);
     }
 
     public void HidePhotoUI()
@@ -158,12 +157,12 @@ public class UIController : MonoBehaviour
     {
         ShowExcept(Canvas.ScanUI);
 
-        if (elf.activeInHierarchy)
-        {
-            isPreviousElfShowing = true;
-        }
+//        if (elf.activeInHierarchy)
+//        {
+//            isPreviousElfShowing = true;
+//        }
 
-        elf.SetActive(false);
+//        elf.SetActive(false);
         arrow.SetActive(false);
         scanUIBackBtn.SetActive(true);
     }
@@ -171,10 +170,10 @@ public class UIController : MonoBehaviour
     public void OnScanBackBtnPressed()
     {
         ShowExcept(Canvas.WelcomeUI);
-        if (isPreviousElfShowing)
-        {
-            elf.SetActive(true);
-        }
+//        if (isPreviousElfShowing)
+//        {
+//            elf.SetActive(true);
+//        }
     }
 
     public void OnGuideBackBtnPressed()
